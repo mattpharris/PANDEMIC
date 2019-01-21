@@ -19,7 +19,7 @@ for games = 1:num_games
     
 while play_game == 1
 	pawn = mod(game_turn, numel(roles)) +1; %pick a player
-	actions = select_actions(pawn,hand,pawn_locs,infections,cures);
+	actions = select_actions(pawn,hand,pawn_locs,infections,res_ctrs,cures);
     
 	[cures, pawn_locs, infections] = perform_actions(actions);
     
