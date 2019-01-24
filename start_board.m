@@ -2,8 +2,12 @@ function [hands, pawn_locs, res_ctrs, infections, player_deck, infect_deck, infe
 
 %Distribute starting hands to each player
 for i = 1:numel(roles)
-    for card = 1:3
-        hands(i,card) = player_deck(card);
+    for card = 1:9
+        if card <= 3
+            hands(i,card) = player_deck(card);
+        else
+            hands(i,card) = cellstr("NULL");
+        end
     end
     player_deck = refresh_deck_index(card,player_deck);
 end

@@ -11,7 +11,12 @@ function [actions] = select_actions(pawn,hand,pawn_locs,infections,res_ctrs,cure
     % 6 - Heal Infection
     % 7 - Cure disease
 
-
+%Size of pawn's hand
+num_cards = 0;
+while strcmp(string(hand(pawn,i+1)),"NULL")==false
+    num_cards = num_cards + 1;
+end
+    
 %Append possible moves
 col = 1;
     %Consider walking moves
@@ -23,7 +28,7 @@ col = 1;
     
     %Consider Chartering from pawn's current city
     destinations = list_fully_infected(infections); %I'm imposing a condition that a pawn will only charter if that city has three infection counters
-    if any(strcmp(pawn_locs(pawn), hand(pawn,:)))
+    if any(strcmp(pawn_locs(pawn), hand(pawn,1:num_cards)))
         for j = 1:numel(destinations)
             options(i+j,col) = [cellstr(sprintf("2_%s__%s", pawn_locs(pawn),destinations(j)))];
         end
@@ -32,7 +37,7 @@ col = 1;
     clear destinations
     
    %Consider chartering to a city using that city's Player Card
-   origins = hand(pawn);
+   origins = hand(pawn,1:num_cards);
    targets = list_fully_infected(infections); %I'm imposing a condition that a pawn will only charter if that city has three infection counters
    priorities = strcmp(origins,targets);
    count = 0;
@@ -64,7 +69,21 @@ col = 1;
    end
    
    %Consider curing disease
-           
+   if (num_cards >= 5) && any(strcmp(pawn_locs(pawn),string(res_ctrs)))
+       i=i+1;
+       [reds, blues, yellows, blacks] = list_HandColors(hand(pawn,1:num_cards));
+       if (reds==5) && strcmp(string(cures(2,2)),"No")
+            options(i,col) = [cellstr(sprintf("7_red__%s", string(pawn_locs(pawn))))]; 
+       elseif (blues==5) && strcmp(string(cures(3,2)),"No")
+           options(i,col) = [cellstr(sprintf("7_blue__%s", string(pawn_locs(pawn))))]; 
+       elseif (yellows==5) && strcmp(string(cures(4,2)),"No")
+           options(i,col) = [cellstr(sprintf("7_yellow__%s", string(pawn_locs(pawn))))]; 
+       elseif (blacks==5) && strcmp(string(cures(5,2)),"No")
+           options(i,col) = [cellstr(sprintf("7_black__%s", string(pawn_locs(pawn))))]; 
+       end
+   end
+       
+       
     
     
    %%%%%%%%%%%%%%%%%%%%%%%%
@@ -95,7 +114,7 @@ col = 1;
            clear destinations
            
            %Consider chartering to a city using that city's Player Card
-           origins = hand(pawn);
+           origins = hand(pawn,1:num_cards);
            targets = list_fully_infected(infections); %I'm imposing a condition that a pawn will only charter if that city has three infection counters
            priorities = strcmp(origins,targets);
            count = 0;
@@ -125,13 +144,25 @@ col = 1;
 
            %Consider healing infection
            if any(strcmp(pawn_locs(pawn),infections(:,1)))
-               i=i+1;
+               ii=ii+1;
                options(ii,1:col-1) = temp(z,1:col-1);
                options(ii,col) = [cellstr(sprintf("6__%s", current_loc))];  
            end
 
            %Consider curing disease
-       
+           if (num_cards >= 5) && any(strcmp(pawn_locs(pawn),string(res_ctrs)))
+               ii=ii+1;
+               [reds, blues, yellows, blacks] = list_HandColors(hand(pawn,1:num_cards));
+               if (reds==5) && strcmp(string(cures(2,2)),"No")
+                    options(ii,col) = [cellstr(sprintf("7_red__%s", string(pawn_locs(pawn))))]; 
+               elseif (blues==5) && strcmp(string(cures(3,2)),"No")
+                   options(ii,col) = [cellstr(sprintf("7_blue__%s", string(pawn_locs(pawn))))]; 
+               elseif (yellows==5) && strcmp(string(cures(4,2)),"No")
+                   options(ii,col) = [cellstr(sprintf("7_yellow__%s", string(pawn_locs(pawn))))]; 
+               elseif (blacks==5) && strcmp(string(cures(5,2)),"No")
+                   options(ii,col) = [cellstr(sprintf("7_black__%s", string(pawn_locs(pawn))))]; 
+               end
+           end
        
    
            %%%%%
