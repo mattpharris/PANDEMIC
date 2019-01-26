@@ -11,6 +11,9 @@ function [actions] = select_actions(pawn,hand,pawn_locs,infections,res_ctrs,cure
     % 6 - Heal Infection
     % 7 - Cure disease
 
+
+options = [];
+    
 %Size of pawn's hand
 num_cards = 0;
 while strcmp(string(hand(pawn,i+1)),"NULL")==false
@@ -57,7 +60,7 @@ col = 1;
    
    
    %Consider building research center
-   if strcmp(pawn_locs(pawn),string(res_ctrs))==false
+   if (strcmp(pawn_locs(pawn),string(res_ctrs))==false) && any(strcmp(pawn_locs(pawn), hand(pawn,1:num_cards)))
       i=i+1;
       options(i,col) = [cellstr(sprintf("5__%s", string(pawn_locs(pawn))))];       
    end
@@ -136,7 +139,7 @@ col = 1;
    
    
            %Consider building research center
-           if strcmp(current_loc,string(res_ctrs))==false
+           if (strcmp(current_loc,string(res_ctrs))==false) && any(strcmp(current_loc, hand(pawn,1:num_cards)))
               ii=ii+1;
               options(ii,1:col-1) = temp(z,1:col-1);
               options(ii,col) = [cellstr(sprintf("5__%s", current_loc))];       
@@ -154,13 +157,13 @@ col = 1;
                ii=ii+1;
                [reds, blues, yellows, blacks] = list_HandColors(hand(pawn,1:num_cards));
                if (reds==5) && strcmp(string(cures(2,2)),"No")
-                    options(ii,col) = [cellstr(sprintf("7_red__%s", string(pawn_locs(pawn))))]; 
+                    options(ii,col) = [cellstr(sprintf("7_red__%s", current_loc))]; 
                elseif (blues==5) && strcmp(string(cures(3,2)),"No")
-                   options(ii,col) = [cellstr(sprintf("7_blue__%s", string(pawn_locs(pawn))))]; 
+                   options(ii,col) = [cellstr(sprintf("7_blue__%s", current_loc))]; 
                elseif (yellows==5) && strcmp(string(cures(4,2)),"No")
-                   options(ii,col) = [cellstr(sprintf("7_yellow__%s", string(pawn_locs(pawn))))]; 
+                   options(ii,col) = [cellstr(sprintf("7_yellow__%s", current_loc))]; 
                elseif (blacks==5) && strcmp(string(cures(5,2)),"No")
-                   options(ii,col) = [cellstr(sprintf("7_black__%s", string(pawn_locs(pawn))))]; 
+                   options(ii,col) = [cellstr(sprintf("7_black__%s", current_loc))]; 
                end
            end
        
@@ -170,7 +173,7 @@ col = 1;
        end
    end
     
-actions = decide_best_move(options);
+actions = pick_best_option(pawn_locs(pawn),options);
 
 
 end

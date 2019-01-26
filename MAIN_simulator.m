@@ -3,7 +3,7 @@ clear; clc; tic;
 
 num_games = 5;
 
-global outbreaks = 0;
+global outbreaks;
 wins = 0; losses = 0;
 
 for games = 1:num_games
@@ -23,7 +23,7 @@ while play_game == 1
     
 	[cures, pawn_locs, infections] = perform_actions(actions);
     
-	hands(pawn,1:9) = draw_PlayerCards(hands(pawn,:);
+	hands(pawn,1:9) = draw_PlayerCards(hands(pawn,:));
 	if any(strcmp(string(hands(pawn,:)),"EPIDEMIC")) %contains epidemic card
 		[hands(pawn), infect_deck, player_discard] = EPIDEMIC(hands(player), infect_deck, infect_discard);
 	end
