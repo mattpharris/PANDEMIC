@@ -21,7 +21,7 @@ while play_game == 1
 	pawn = mod(game_turn, numel(roles)) +1; %pick a player
 	actions = select_actions(pawn,hands,pawn_locs,infections,res_ctrs,cures);
     
-	[cures, pawn_locs, infections] = perform_actions(actions);
+	[cures, res_ctrs, hands, pawn_locs, infections] = perform_actions(pawn,hands,pawn_locs,cures,res_ctrs,infections,actions);
     
 	hands(pawn,1:9) = draw_PlayerCards(hands(pawn,:));
 	if any(strcmp(string(hands(pawn,:)),"EPIDEMIC")) %contains epidemic card

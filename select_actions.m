@@ -157,13 +157,13 @@ col = 1;
                ii=ii+1;
                [reds, blues, yellows, blacks] = list_HandColors(hand(pawn,1:num_cards));
                if (reds==5) && strcmp(string(cures(2,2)),"No")
-                    options(ii,col) = [cellstr(sprintf("7_red__%s", current_loc))]; 
+                    options(ii,col) = [cellstr("7_red")]; 
                elseif (blues==5) && strcmp(string(cures(3,2)),"No")
-                   options(ii,col) = [cellstr(sprintf("7_blue__%s", current_loc))]; 
+                   options(ii,col) = cellstr(sprintf("7_blue"); 
                elseif (yellows==5) && strcmp(string(cures(4,2)),"No")
-                   options(ii,col) = [cellstr(sprintf("7_yellow__%s", current_loc))]; 
+                   options(ii,col) = cellstr(sprintf("7_yellow"); 
                elseif (blacks==5) && strcmp(string(cures(5,2)),"No")
-                   options(ii,col) = [cellstr(sprintf("7_black__%s", current_loc))]; 
+                   options(ii,col) = cellstr(sprintf("7_black"); 
                end
            end
        
